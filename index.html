@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://libs.zappar.com/zappar-aframe/2.0.0-beta.9/zappar-aframe.js"></script>
+
+    <!-- Zappar Splash Screen Useful Package -->
+    <script defer src="https://libs.zappar.com/zappar-splash/0.0.0-rc.1/zappar-splash.js"></script>
+
+    <!-- Learn more about Sense of Space's A-Frame component:  -->
+    <!-- https://docs.senseofspace.io/sxrweb-standalone-a-frame-plugin -->
+    <script src="https://assets.senseofspace.io/jsplugins/1.0.15/soshologram_aframe.js"></script>
+
+    <meta charset="utf-8" />
+    <title>Zappar for A-Frame & Sense of Space: Volumetric Video Example</title>
+
+    <link rel="stylesheet" href="style.css" />
+    <!-- Load in our components as a matter of urgency -->
+    <script src="components.js"></script>
+</head>
+
+<body>
+    <a-scene id="zappar-scene" loading-screen="backgroundColor: #e9f3fd" shadow="type: pcfsoft" light="defaultLightsEnabled: false" style="display: none">
+        <!-- Load up any assets we may need -->
+        <a-assets>
+            <img id="hotspotTexture" src="./assets/hotspot.png">
+        </a-assets>
+        <!-- shows a full-page dialog that informs the user they're using an unsupported browser -->
+        <a-entity zappar-compatibility-ui id="compatibility"></a-entity>
+
+        <!-- Set up our zappar-camera -->
+        <a-camera id="camera" zappar-camera />
+
+        <!-- Setup our instant tracker and start it in placement mode so the user can -->
+        <!-- choose a location for the object -->
+        <a-entity light="type: ambient;"></a-entity>
+        <a-entity id="instant-tracker" zappar-instant="placement-mode: true; anchorPoseOffset: 0 -1.5 -6">
+             <!-- Include a volumetric video inside our instant tracker -->
+             <a-entity soshologram="source:https://stream.senseofspace.io/demos/mov-01/hologram.sxrweb" id="hologram1" scale="2 2 2" rotation="0 270 0" shadow="cast: true"></a-entity>
+             
+             <!-- Include a hotspot which will give users an idea where they are placing content -->
+             <a-entity id="hotspot" geometry="primitive:plane;" scale="2 2 2" position="0 0.001 0" rotation="-90 0 0" material="src: #hotspotTexture; transparent: true; alphaTest: 0.5"></a-entity>
+             
+             <!-- Include a plane which will receive shadows -->
+             <a-entity id="shadowPlane" geometry="primitive:plane; width: 10; height: 10" material="color: red; side:double"  rotation="-90 0 0" shadow="receive: true" shadow-material ></a-entity>
+             
+             <!-- Include a light source to cast shadows -->
+              <a-entity id="dirLight" light="type: directional; castShadow: true" position="0 30 0" shadow-opts  ></a-entity>
+        </a-entity>
+    </a-scene>
+
+    <!-- Loading circle UI whilst we wait -->
+    <div id="loading-circle-ui" class="noselect"></div>
+
+    <!-- Some UI for the user to tap to indicate they're happy with the placement -->
+    <div id="zappar-placement-ui" class="noselect">Tap here to place</div>
+
+    <script src="index.js"></script>
+</body>
+
+</html>
